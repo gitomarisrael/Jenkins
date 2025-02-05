@@ -1,0 +1,60 @@
+pipeline {
+    agent any  // Se ejecuta en cualquier agente disponible
+
+    environment {
+        // Variables de entorno (opcional)
+        MY_VAR = "Valor"
+        BUSINESS_GROUP = "${BUSINESSGROUP}"
+    }
+
+    options {
+        timeout(time: 30, unit: 'MINUTES') // Tiempo máximo de ejecución
+    }
+
+    tools {
+      maven 'MavenMule' // Nombre dado a la instalación de Maven en Jenkins
+      nodejs 'NodeTools' // Nombre dado a la instalación de Node.js en Jenkins
+      jdk 'Java11Amazon' // Nombre dado a la instalación de JDK en Jenkins
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm  // Obtiene el código del repositorio configurado
+            }
+        }
+        
+        stage('Build') {
+            steps {
+                bat 'mvn clean package'  // Ejecuta la compilación del proyecto en Windows
+            }
+        }
+        
+        stage('Test') {
+            steps {
+                bat 'mvn test'  // Ejecuta pruebas unitarias en Windows
+            }
+        }
+        
+        stage('Deploy') {
+            when {
+                branch 'main'  // Solo despliega en la rama 'main'
+            }
+            steps {
+                bat 'deploy.bat'  // Script de despliegue en Windows (ajústalo según tu caso)
+            }
+        }
+    }
+
+    post {
+        always {
+            echo 'Pipeline finalizada'  // Mensaje que siempre se muestra al final del pipeline
+        }
+        success {
+            echo 'Build exitosa'  // Mensaje que se muestra si el pipeline es exitoso
+        }
+        failure {
+            echo 'Build fallida'  // Mensaje que se muestra si el pipeline falla
+        }
+    }
+}
