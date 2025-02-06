@@ -13,8 +13,6 @@ pipeline {
 
     tools {
       maven 'MavenMule' // Nombre dado a la instalación de Maven en Jenkins
-      nodejs 'NodeTools' // Nombre dado a la instalación de Node.js en Jenkins
-      jdk 'Java11Amazon' // Nombre dado a la instalación de JDK en Jenkins
     }
 
     stages {
