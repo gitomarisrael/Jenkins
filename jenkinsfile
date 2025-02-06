@@ -3,6 +3,7 @@ pipeline {
 
     environment {
         // Variables de entorno (opcional)
+        MY_VAR = "Valor"
     }
 
     options {
@@ -10,7 +11,7 @@ pipeline {
     }
 
     tools {
-      maven 'MavenMule' // Nombre dado a la instalación de Maven en Jenkins
+        maven 'MavenMule' // Nombre dado a la instalación de Maven en Jenkins
     }
 
     stages {
@@ -19,11 +20,10 @@ pipeline {
                 checkout scm  // Obtiene el código del repositorio configurado
             }
         }
-    }
-
-        stage('Munits'){
-            steps{
-                script{
+        
+        stage('Munits') {
+            steps {
+                script {
                     bat 'mvn clean test'
                 }
             }
@@ -31,20 +31,16 @@ pipeline {
         
         stage('Publish Asset Exchange') {
             steps {
-                bat "mvn -s C:/Users/omarm/.m2/settings.xml clean deploy \
-                     -DbusinessGroupId=b8f69e4d-f96e-47cb-bf59-5851d9268fef \
-                     -Dmule.env=dev \
-                     -Denviroment=Sandbox \
-                     -DskipTest"
+                bat 'mvn -s C:/Users/omarm/.m2/settings.xml clean deploy -DbusinessGroupId=b8f69e4d-f96e-47cb-bf59-5851d9268fef -Dmule.env=dev -Denviroment=Sandbox -DskipTest'
             }
         }
         
         stage('Deploy CloudHub 2.0') {
             steps {
-                bat "mvn -s C:/Users/omarm/.m2/settings.xml clean deploy -DmuleDeploy -Denvironment=Sandbox -DbusinessGroupId=b8f69e4d-f96e-47cb-bf59-5851d9268fef \
-                 -Dtarget=Cloudhub-US-East-2 -Dreplicas=1 -DvCores=0.1 -Dmule.env=dev -DskipTest"
+                bat 'mvn -s C:/Users/omarm/.m2/settings.xml clean deploy -DmuleDeploy -Denvironment=Sandbox -DbusinessGroupId=b8f69e4d-f96e-47cb-bf59-5851d9268fef -Dtarget=Cloudhub-US-East-2 -Dreplicas=1 -DvCores=0.1 -Dmule.env=dev -DskipTest'
             }
         }
+    }
 
     post {
         always {
