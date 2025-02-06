@@ -39,8 +39,8 @@ pipeline {
                 branch 'develop'  // Solo despliega en la rama 'main'
             }
             steps {
-                bat 'mvn clean deploy -DbusinessGroupId=b8f69e4d-f96e-47cb-bf59-5851d9268fef -Dmule.env=dev -DskipTest -Denviroment=Sandbox'
-                bat 'mvn clean deploy -DmuleDeploy -Denvironment=Sandbox -DbusinessGroupId=b8f69e4d-f96e-47cb-bf59-5851d9268fef -Dtarget=Cloudhub-US-East-2 -Dreplicas=1 -DvCores=0.1 -Dmule.env=dev -DskipTest'
+                bat 'mvn clean deploy -DbusinessGroupId=b8f69e4d-f96e-47cb-bf59-5851d9268fef -Dmule.env=dev -DskipTest -Denviroment=Sandbox -X'
+                bat 'mvn clean deploy -DmuleDeploy -Denvironment=Sandbox -DbusinessGroupId=b8f69e4d-f96e-47cb-bf59-5851d9268fef -Dtarget=Cloudhub-US-East-2 -Dreplicas=1 -DvCores=0.1 -Dmule.env=dev -DskipTest -X'
             }
         }
     }
