@@ -31,7 +31,7 @@ pipeline {
         stage('Publish Asset Exchange') {
             steps {
 
-                configFileProvider([configFile(fileId: "Settings-Mulesoft", variable: 'MAVEN_SETTINGS_XML')]) {
+                configFileProvider([configFile(fileId: "25f69518-8425-467e-95f3-34b34eee47b7", variable: 'MAVEN_SETTINGS_XML')]) {
                 bat 'mvn -s $MAVEN_SETTINGS_XML clean deploy -DbusinessGroupId=${MULE_BUSINESSGROUPID} -Dmule.env=dev -Denviroment=Sandbox -DskipTest'
                 }
 
