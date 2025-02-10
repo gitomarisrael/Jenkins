@@ -31,7 +31,7 @@ pipeline {
         stage('Publish Asset Exchange') {
             steps {
                 script{
-                configFileProvider([configFile(fileId: '25f69518-8425-467e-95f3-34b34eee47b7', variable: 'MAVEN_SETTINGS_XML')]) {
+                configFileProvider([configFile(fileId: '9a0f8d13-2a01-46b1-ab1f-0a4d96603257', variable: 'MAVEN_SETTINGS_XML')]) {
                  bat 'mvn -s $MAVEN_SETTINGS_XML clean deploy -DbusinessGroupId=b8f69e4d-f96e-47cb-bf59-5851d9268fef -Dmule.env=dev -Denviroment=Sandbox -DskipTest'
                 }
                 }
