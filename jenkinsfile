@@ -1,23 +1,22 @@
 pipeline {
-    agent any  // Se ejecuta en cualquier agente disponible
+    agent any
 
     environment {
-        // Variables de entorno (opcional)
         MY_VAR = "Valor"
     }
 
     options {
-        timeout(time: 30, unit: 'MINUTES') // Tiempo máximo de ejecución
+        timeout(time: 30, unit: 'MINUTES')
     }
 
     tools {
-        maven 'MavenMule' // Nombre dado a la instalación de Maven en Jenkins
+        maven 'MavenMule'
     }
 
     stages {
         stage('Checkout') {
             steps {
-                checkout scm  // Obtiene el código del repositorio configurado
+                checkout scm
             }
         }
         
@@ -31,7 +30,12 @@ pipeline {
         
         stage('Publish Asset Exchange') {
             steps {
-                bat 'mvn -s C:/Users/omarm/.m2/settings.xml clean deploy -DbusinessGroupId=b8f69e4d-f96e-47cb-bf59-5851d9268fef -Dmule.env=dev -Denviroment=Sandbox -DskipTest'
+
+                configFileProvider([configFile(fileId: "Settings-Mulesoft", variable: 'MAVEN_SETTINGS_XML')]) {
+                bat 'mvn -s $MAVEN_SETTINGS_XML clean deploy -DbusinessGroupId=${MULE_BUSINESSGROUPID} -Dmule.env=dev -Denviroment=Sandbox -DskipTest'
+                }
+
+                //bat 'mvn -s C:/Users/omarm/.m2/settings.xml clean deploy -DbusinessGroupId=${MULE_BUSINESSGROUPID} -Dmule.env=dev -Denviroment=Sandbox -DskipTest'
             }
         }
         
@@ -44,13 +48,13 @@ pipeline {
 
     post {
         always {
-            echo 'Pipeline finalizada'  // Mensaje que siempre se muestra al final del pipeline
+            echo 'Pipeline finalizada'
         }
         success {
-            echo 'Build exitosa'  // Mensaje que se muestra si el pipeline es exitoso
+            echo 'Build exitosa'
         }
         failure {
-            echo 'Build fallida'  // Mensaje que se muestra si el pipeline falla
+            echo 'Build fallida'
         }
     }
 }
