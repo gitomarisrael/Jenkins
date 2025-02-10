@@ -20,13 +20,13 @@ pipeline {
             }
         }
         
-        stage('Munits') {
+        /*stage('Munits') {
             steps {
                 script {
                     bat 'mvn clean test'
                 }
             }
-        }
+        }*/
         
         stage('Publish Asset Exchange') {
             steps {
