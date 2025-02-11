@@ -20,21 +20,13 @@ pipeline {
             }
         }
         
-        /*stage('Munits') {
-            steps {
-                script {
-                    bat 'mvn clean test'
-                }
-            }
-        }*/
-        
         stage('Publish Asset Exchange') {
             steps {
 
                 script{
-                configFileProvider([configFile(fileId: '9a0f8d13-2a01-46b1-ab1f-0a4d96603257', variable: 'MAVEN_SETTINGS_XML')]) {
+                configFileProvider([configFile(fileId: '${FILE_ID}', variable: 'MAVEN_SETTINGS_XML')]) {
                     echo "MAVEN_SETTINGS_XML: ${env.MAVEN_SETTINGS_XML}"
-                bat 'mvn -s %MAVEN_SETTINGS_XML% clean deploy -DbusinessGroupId=b8f69e4d-f96e-47cb-bf59-5851d9268fef -Dmule.env=dev -Denviroment=Sandbox -DskipTest'
+                bat 'mvn -s %MAVEN_SETTINGS_XML% clean deploy -DbusinessGroupId=${MULE_BUSINESS_GROUP_ID} -Dmule.env=dev -Denviroment=${ENVIROMENT} -DskipTest'
 
                 }
                 }
@@ -44,7 +36,11 @@ pipeline {
         
         stage('Deploy CloudHub 2.0') {
             steps {
-                bat 'mvn -s C:/Users/omarm/.m2/settings.xml clean deploy -DmuleDeploy -Denvironment=Sandbox -DbusinessGroupId=b8f69e4d-f96e-47cb-bf59-5851d9268fef -Dtarget=Cloudhub-US-East-2 -Dreplicas=1 -DvCores=0.1 -Dmule.env=dev -DskipTest'
+                script{
+                configFileProvider([configFile(fileId: '${FILE_ID}', variable: 'MAVEN_SETTINGS_XML')]) {
+                    echo "MAVEN_SETTINGS_XML: ${env.MAVEN_SETTINGS_XML}"
+                bat 'mvn -s %MAVEN_SETTINGS_XML% clean deploy -DmuleDeploy -Denvironment=${ENVIROMENT} -DbusinessGroupId=${MULE_BUSINESS_GROUP_ID} -Dtarget=${TARGET} -Dreplicas=${REPLICAS} -DvCores=${V_CORES} -Dmule.env=dev -DskipTest'
+                }
             }
         }
     }
