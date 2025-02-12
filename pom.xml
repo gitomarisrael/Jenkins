@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>b8f69e4d-f96e-47cb-bf59-5851d9268fef</groupId> <!-- =1= Se agregó el BG -->
-	<artifactId>api-starwars</artifactId>
-	<version>1.0.10</version>
+	<groupId>b8f69e4d-f96e-47cb-bf59-5851d9268fef</groupId>
+	<!-- =1= Se agregó el BG -->
+	<artifactId>api-starwars-mulesoft</artifactId>
+	<version>1.0.1</version>
 	<packaging>mule-application</packaging>
 
-	<name>api-starwars</name>
+	<name>api-starwars-mulesoft</name>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -18,7 +17,8 @@
 		<app.runtime>4.6.11</app.runtime>
 		<mule.maven.plugin.version>4.2.0</mule.maven.plugin.version>
 
-		<project.mule.name>starwars-omar-api</project.mule.name> <!-- =2= Se agregó el deploy name -->
+		<project.mule.name>api-starwars-mulesoft</project.mule.name>
+		<!-- =2= Se agregó el deploy name -->
 	</properties>
 
 	<build>
@@ -81,17 +81,17 @@
 			<classifier>mule-plugin</classifier>
 		</dependency>
 		<dependency>
-			<groupId>b8f69e4d-f96e-47cb-bf59-5851d9268fef</groupId>
-			<artifactId>starwars</artifactId>
-			<version>1.0.0</version>
-			<classifier>raml</classifier>
-			<type>zip</type>
-		</dependency>
-		<dependency>
 			<groupId>org.mule.modules</groupId>
 			<artifactId>mule-apikit-module</artifactId>
 			<version>1.11.3</version>
 			<classifier>mule-plugin</classifier>
+		</dependency>
+		<dependency>
+			<groupId>b8f69e4d-f96e-47cb-bf59-5851d9268fef</groupId>
+			<artifactId>api-starwars-mulesoft</artifactId>
+			<version>1.0.0</version>
+			<classifier>raml</classifier>
+			<type>zip</type>
 		</dependency>
 	</dependencies>
 
