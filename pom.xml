@@ -6,7 +6,7 @@
 
 	<groupId>b8f69e4d-f96e-47cb-bf59-5851d9268fef</groupId> <!-- =1= Se agregó el BG -->
 	<artifactId>api-starwars</artifactId>
-	<version>1.0.9</version>
+	<version>1.0.10</version>
 	<packaging>mule-application</packaging>
 
 	<name>api-starwars</name>
@@ -35,10 +35,6 @@
 				<extensions>true</extensions>
 				<!-- =3= Configuraciones para cloudhub 2 -->
 				<configuration>
-					<autodiscovery>
-						<clientId>${anypoint.platform.client_id}</clientId>
-						<clientSecret>${anypoint.platform.client_secret}</clientSecret>
-					</autodiscovery>
 					<classifier>mule-application</classifier>
 					<cloudhub2Deployment>
 						<uri>https://anypoint.mulesoft.com</uri>
@@ -50,7 +46,6 @@
 						<applicationName>${project.mule.name}</applicationName>
 						<replicas>${replicas}</replicas>
 						<vCores>${vCores}</vCores>
-
 						<deploymentSettings>
 							<http>
 								<inbound>
