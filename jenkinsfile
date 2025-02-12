@@ -23,10 +23,10 @@ pipeline {
         stage('Publish Asset Exchange') {
             steps {
                 script {
-                    deployToEchange("-DbusinessGroupId=${MULE_BUSINESS_GROUP_ID} " +
-                                  "-Dmule.env=${ENV_PROPERTIES} " +
-                                  "-Denviroment=${ENVIROMENT} " +
-                                  "-DskipTest")
+                    configFileProvider([configFile(fileId: "${MULE_SETTINGS_FILE}", variable: 'MAVEN_SETTINGS_XML')]) {
+                        echo "MAVEN_SETTINGS_XML: ${env.MAVEN_SETTINGS_XML}"
+                        bat "mvn -s %MAVEN_SETTINGS_XML% clean deploy -DbusinessGroupId=${MULE_BUSINESS_GROUP_ID} -Dmule.env=${ENV_PROPERTIES} -Denviroment=${ENVIROMENT} -DskipTest"
+                    }
                 }
             }
         }
@@ -34,12 +34,15 @@ pipeline {
         stage('Deploy CloudHub 2.0') {
             steps {
                 script {
-                    deployToCloudHub("-DbusinessGroupId=${MULE_BUSINESS_GROUP_ID} " +
-                                     "-Dtarget=${TARGET} " +
-                                     "-Dreplicas=${REPLICAS} " +
-                                     "-DvCores=${V_CORES} " +
-                                     "-Dmule.env=${ENV_PROPERTIES} " +
-                                     "-DskipTest")
+                    configFileProvider([configFile(fileId: "${MULE_SETTINGS_FILE}", variable: 'MAVEN_SETTINGS_XML')]) {
+                        echo "MAVEN_SETTINGS_XML: ${env.MAVEN_SETTINGS_XML}"
+                        bat """
+                        mvn -s %MAVEN_SETTINGS_XML% clean deploy -DbusinessGroupId=${MULE_BUSINESS_GROUP_ID} -Dtarget=${TARGET} -Dreplicas=${REPLICAS} -DvCores=${V_CORES} -Dmule.env=${ENV_PROPERTIES} -DskipTest \
+                            -Danypoint.platform.client_id=${ANYPOINT_PLATFORM_CLIENT_ID} \
+                            -Danypoint.platform.client_secret=${ANYPOINT_PLATFORM_CLIENT_SECRET} \
+                            -Danypoint.platform.apiId=${APP_ID}
+                        """
+                    }
                 }
             }
         }
@@ -55,23 +58,5 @@ pipeline {
         failure {
             echo 'Build fallida'
         }
-    }
-}
-
-def deployToEchange(args) {
-    configFileProvider([configFile(fileId: "${MULE_SETTINGS_FILE}", variable: 'MAVEN_SETTINGS_XML')]) {
-        echo "MAVEN_SETTINGS_XML: ${env.MAVEN_SETTINGS_XML}"
-        bat "mvn -s %MAVEN_SETTINGS_XML% clean deploy ${args}"
-    }
-}
-
-def deployToCloudHub(args) {
-    configFileProvider([configFile(fileId: "${MULE_SETTINGS_FILE}", variable: 'MAVEN_SETTINGS_XML')]) {
-        echo "MAVEN_SETTINGS_XML: ${env.MAVEN_SETTINGS_XML}"
-        bat "mvn -s %MAVEN_SETTINGS_XML% clean deploy -DmuleDeploy ${args} \
-            -Danypoint.platform.client_id=${ANYPOINT_PLATFORM_CLIENT_ID} \
-            -Danypoint.platform.client_secret=${ANYPOINT_PLATFORM_CLIENT_SECRET} \
-            -Danypoint.platform.apiId=${APP_ID}"
-        
     }
 }
